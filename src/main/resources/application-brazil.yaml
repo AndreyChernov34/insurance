@@ -1,0 +1,9 @@
+country: brazil
+currency: Real
+type:
+  health:
+    coefficient: 0.03
+    amount: 800
+  rubbery:
+    coefficient: 0.05
+    amount: 300
