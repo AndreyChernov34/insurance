@@ -23,12 +23,12 @@ public class InsuranceCalcJapanService implements InsuranceCalcService {
         BigDecimal result = BigDecimal.ZERO;
         switch (insuranceType) {
             case HEALTH_INSURANCE -> {
-                result = coverageAmount.multiply(property.getHealthcoefficient()).
-                        add(property.getHealthamount());
+                result = coverageAmount.multiply(property.getHealthCoefficient()).
+                        add(property.getHealthAmount());
             }
             case ROBBERY_INSURANCE -> {
-                result = coverageAmount.multiply(property.getRobberycoefficient()).
-                        add(property.getRobberyamount());
+                result = coverageAmount.multiply(property.getRobberyCoefficient()).
+                        add(property.getRobberyAmount());
             }
             default -> {
                 throw new IllegalArgumentException("Неизвестный тип страхования");

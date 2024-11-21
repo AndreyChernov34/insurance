@@ -10,9 +10,9 @@ import java.math.BigDecimal;
 public class Property {
     private CountryName country;
     private CurrencyName currency;
-    private BigDecimal healthcoefficient;
-    private BigDecimal healthamount;
-    private BigDecimal robberycoefficient;
-    private BigDecimal robberyamount;
+    private BigDecimal healthCoefficient;
+    private BigDecimal healthAmount;
+    private BigDecimal robberyCoefficient;
+    private BigDecimal robberyAmount;
 
 }
