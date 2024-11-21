@@ -37,7 +37,7 @@ public abstract class AbstractInsuranceService implements com.javacademy.insuran
 
         InsuranceContract resultInsurance;
 
-        /**
+         /**
          * метод создания страхового предложения (неоплаченного контракта) с занесением в архив
          * @param coverageAmount    стоимость страхового покрытия
          * @param name              ФИО клиента

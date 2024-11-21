@@ -34,8 +34,8 @@ public class InsuranceContract {
 
     /**
      * Переопределяем метод сравнения для тестов
-     * @param object
-     * @return
+     * @param object    Объект сравнения
+     * @return          Результат сравнения
      */
     @Override
     public boolean equals(Object object) {

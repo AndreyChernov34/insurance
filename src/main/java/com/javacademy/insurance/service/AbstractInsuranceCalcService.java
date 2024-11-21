@@ -17,13 +17,13 @@ public abstract class AbstractInsuranceCalcService implements com.javacademy.ins
     Property property;
     /**
      * метод расчета стоимости страховки
-     * @param coverageAmount
-     * @param insuranceType
-     * @return
+     * @param coverageAmount    Сумма покрытия страховки
+     * @param insuranceType     Тип страховки
+     * @return                  Стоимость страховки
      */
     @Override
     public BigDecimal insuranceCost(BigDecimal coverageAmount, InsuranceType insuranceType) {
-        BigDecimal result = BigDecimal.ZERO;
+        BigDecimal result;
         switch (insuranceType) {
             case HEALTH_INSURANCE -> {
                 result = coverageAmount.multiply(property.getHealthCoefficient()).
