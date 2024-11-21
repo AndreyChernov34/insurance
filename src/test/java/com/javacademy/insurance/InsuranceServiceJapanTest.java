@@ -45,7 +45,7 @@ public class InsuranceServiceJapanTest {
     @Mock
     private NumberContractGenerator mocknumberContractGenerator;
     @Mock
-    private  InsuranceCalcJapanService mockinsuranceCalcJapanServiceJapan;
+    private InsuranceCalcJapanService mockinsuranceCalcJapanServiceJapan;
     @Mock
     private Archive mockarchive;
     private InsuranceServiceJapan insuranceServiceJapan;

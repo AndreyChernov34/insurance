@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 @ActiveProfiles("brazil")
 @SpringBootTest
-public class InsuranceCalcBrazilServiceTest {
+public class AbstractInsuranceCalcServiceTest {
     private static final BigDecimal EXPECTED_ROBBERY = BigDecimal.valueOf(2800);
     private static final BigDecimal COVERAGE_AMOUNT_ROBBERY = BigDecimal.valueOf(50000);
     private static final BigDecimal EXPECTED_HEALTH = BigDecimal.valueOf(6800);
