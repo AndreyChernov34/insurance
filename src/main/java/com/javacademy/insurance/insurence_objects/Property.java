@@ -2,9 +2,11 @@ package com.javacademy.insurance.insurence_objects;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import java.math.BigDecimal;
 
+/**
+ * Данные из application.yaml
+ */
 @ConfigurationProperties(prefix =  "app")
 @Data
 public class Property {

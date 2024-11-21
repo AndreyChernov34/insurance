@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
+/**
+ * Страховой калькулятор для Японии
+ */
 @Component
 @Profile("japan")
 @AllArgsConstructor
@@ -17,6 +20,12 @@ import java.math.BigDecimal;
 public class InsuranceCalcJapanService implements InsuranceCalcService {
     Property property;
 
+    /**
+     * метод расчета стоимости страховки
+     * @param coverageAmount
+     * @param insuranceType
+     * @return
+     */
     @Override
     public BigDecimal insuranceCost(BigDecimal coverageAmount, InsuranceType insuranceType)
             throws IllegalArgumentException {

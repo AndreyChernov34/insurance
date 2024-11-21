@@ -30,27 +30,25 @@ import static org.mockito.Mockito.when;
 @ActiveProfiles("japan")
 @SpringBootTest
 public class InsuranceServiceJapanTest {
+    private static final BigDecimal COVERAGE_AMOUNT_ROBBERY = BigDecimal.valueOf(100000);
+    private static final BigDecimal INSURANCE_COST_ROBBERY = BigDecimal.valueOf(20000);
+    private static final BigDecimal COVERAGE_AMOUNT_HEALTH = BigDecimal.valueOf(10_000_000);
+    private static final BigDecimal INSURANCE_COST_HEALTH = BigDecimal.valueOf(162000);
+    private static final CountryName COUNTRY_NAME = CountryName.JAPAN;
+    private static final CurrencyName CURRENCY_NAME = CurrencyName.YEN;
+    private static final String NAME = "Иванов Иван Иванович";
+
     @Autowired
     private Property property;
     @Autowired
     private  NumberContractGenerator numberContractGenerator;
     @Mock
+    private NumberContractGenerator mocknumberContractGenerator;
+    @Mock
     private  InsuranceCalcJapanService mockinsuranceCalcJapanServiceJapan;
     @Mock
     private Archive mockarchive;
-    @Mock
-    private NumberContractGenerator mocknumberContractGenerator;
-
-    private static final BigDecimal COVERAGE_AMOUNT_ROBBERY = BigDecimal.valueOf(100000);
-    private static final BigDecimal INSURANCE_COST_ROBBERY = BigDecimal.valueOf(20000);
-    private static final BigDecimal COVERAGE_AMOUNT_HEALTH = BigDecimal.valueOf(10_000_000);
-    private static final BigDecimal INSURANCE_COST_HEALTH = BigDecimal.valueOf(162000);
-
     private InsuranceServiceJapan insuranceServiceJapan;
-
-
-
-
 
     @BeforeEach
     public void setUp() {
@@ -72,9 +70,8 @@ public class InsuranceServiceJapanTest {
     @Test
     public void insuranceContractRobberyTest() {
         String number = "001";
-
         InsuranceType insuranceType = InsuranceType.ROBBERY_INSURANCE;
-        String name = "Иванов Иван Иванович";
+
         when(mocknumberContractGenerator.generateContractNumber()).thenReturn(number);
         when(mockinsuranceCalcJapanServiceJapan.insuranceCost(COVERAGE_AMOUNT_ROBBERY, insuranceType)).
                 thenReturn(INSURANCE_COST_ROBBERY);
@@ -83,9 +80,9 @@ public class InsuranceServiceJapanTest {
                  mockinsuranceCalcJapanServiceJapan);
 
         InsuranceContract expected = new InsuranceContract(number, INSURANCE_COST_ROBBERY,
-                COVERAGE_AMOUNT_ROBBERY, CurrencyName.YEN, name, CountryName.JAPAN,
+                COVERAGE_AMOUNT_ROBBERY, CurrencyName.YEN, NAME, CountryName.JAPAN,
                 ContractStatus.UNPAID_CONTRACT, insuranceType);
-        InsuranceContract result = insuranceServiceJapan.insuranceOffer(COVERAGE_AMOUNT_ROBBERY, name, insuranceType);
+        InsuranceContract result = insuranceServiceJapan.insuranceOffer(COVERAGE_AMOUNT_ROBBERY, NAME, insuranceType);
 
         Assertions.assertEquals(expected, result);
     }
@@ -107,10 +104,8 @@ public class InsuranceServiceJapanTest {
     public void insuranceContractHealthTest() {
         String number = "001";
         ContractStatus contractStatus = ContractStatus.UNPAID_CONTRACT;
-        CountryName countryName = CountryName.JAPAN;
-        CurrencyName currencyName = CurrencyName.YEN;
         InsuranceType insuranceType = InsuranceType.HEALTH_INSURANCE;
-        String name = "Иванов Иван Иванович";
+
 
         when(mocknumberContractGenerator.generateContractNumber()).thenReturn(number);
         when(mockinsuranceCalcJapanServiceJapan.insuranceCost(COVERAGE_AMOUNT_HEALTH, insuranceType)).
@@ -119,9 +114,9 @@ public class InsuranceServiceJapanTest {
                 mockinsuranceCalcJapanServiceJapan);
 
         InsuranceContract expected = new InsuranceContract(number, INSURANCE_COST_HEALTH,
-                COVERAGE_AMOUNT_HEALTH, currencyName, name, countryName,
+                COVERAGE_AMOUNT_HEALTH, CURRENCY_NAME, NAME, COUNTRY_NAME,
                 contractStatus, insuranceType);
-        InsuranceContract result = insuranceServiceJapan.insuranceOffer(COVERAGE_AMOUNT_HEALTH, name, insuranceType);
+        InsuranceContract result = insuranceServiceJapan.insuranceOffer(COVERAGE_AMOUNT_HEALTH, NAME, insuranceType);
         Assertions.assertEquals(expected, result);
     }
 
@@ -139,34 +134,34 @@ public class InsuranceServiceJapanTest {
      */
     @Test
     public void insuranceContractPayTest() throws NonExistentNumberContract {
-
         ContractStatus contractStatus = ContractStatus.PAID_CONTRACT;
-        CountryName countryName = CountryName.JAPAN;
-        CurrencyName currencyName = CurrencyName.YEN;
         InsuranceType insuranceType = InsuranceType.HEALTH_INSURANCE;
-        String name = "Иванов Иван Иванович";
+
         String number = numberContractGenerator.generateContractNumber();
 
         when(mockarchive.contractContains(number)).thenReturn(true);
         when(mockarchive.getContract(number)).thenReturn(new InsuranceContract(number,
                 INSURANCE_COST_HEALTH,
                 COVERAGE_AMOUNT_HEALTH,
-                currencyName,
-                name,
-                countryName,
+                CURRENCY_NAME,
+                NAME,
+                COUNTRY_NAME,
                 ContractStatus.UNPAID_CONTRACT,
                 insuranceType));
 
         insuranceServiceJapan = new InsuranceServiceJapan(property, mockarchive, numberContractGenerator,
                 mockinsuranceCalcJapanServiceJapan);
-
-        InsuranceContract expected = new InsuranceContract(number, INSURANCE_COST_HEALTH,
-                COVERAGE_AMOUNT_HEALTH, currencyName, name, countryName,
-                contractStatus, insuranceType);
-
         InsuranceContract result = insuranceServiceJapan.insurancePay(number);
-        System.out.println(expected);
-        System.out.println(result);
+
+        InsuranceContract expected = new InsuranceContract(number,
+                INSURANCE_COST_HEALTH,
+                COVERAGE_AMOUNT_HEALTH,
+                CURRENCY_NAME,
+                NAME,
+                COUNTRY_NAME,
+                contractStatus,
+                insuranceType);
+
         Assertions.assertEquals(expected, result);
     }
 

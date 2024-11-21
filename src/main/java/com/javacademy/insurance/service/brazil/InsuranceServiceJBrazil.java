@@ -7,32 +7,48 @@ import com.javacademy.insurance.exceptions.NonExistentNumberContract;
 import com.javacademy.insurance.insurence_objects.ContractStatus;
 import com.javacademy.insurance.insurence_objects.InsuranceContract;
 import com.javacademy.insurance.insurence_objects.InsuranceType;
-import com.javacademy.insurance.service.japan.InsuranceCalcJapanService;
 import com.javacademy.insurance.service.InsuranceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
+/**
+ * Сервис страхования для Бразилии
+ */
 @Component
 @Profile("brazil")
 @EnableConfigurationProperties(Property.class)
 public class InsuranceServiceJBrazil implements InsuranceService {
-    Property property;
-    Archive archive;
+    // класс с данными
+    @Autowired
+    private Property property;
+    // архив
+    @Autowired
+    private Archive archive;
+    // генератор номера
+    @Autowired
+    private NumberContractGenerator numberContractGenerator;
+    // Страховой калькулятор
+    @Autowired
+    InsuranceCalcBrazilService insuranceCalcBrazilService;
 
-
+    /**
+     * метод создания страхового предложения (неоплаченного контракта) с занесением в архив
+     * @param coverageAmount    стоимость страхового покрытия
+     * @param name              ФИО клиента
+     * @param insuranceType     тип страхования
+     * @return                  Страховой контракт
+     */
     @Override
     public InsuranceContract insuranceOffer(BigDecimal coverageAmount, String name, InsuranceType insuranceType) {
 
         InsuranceContract resultInsurance;
-        InsuranceCalcJapanService insuranceCalcJapanService = new InsuranceCalcJapanService(property);
-        NumberContractGenerator numberContractGenerator = new NumberContractGenerator();
-        String number = numberContractGenerator.generateContractNumber();
 
-        resultInsurance = new InsuranceContract(number,
-                insuranceCalcJapanService.insuranceCost(coverageAmount, insuranceType),
+        resultInsurance = new InsuranceContract(numberContractGenerator.generateContractNumber(),
+                insuranceCalcBrazilService.insuranceCost(coverageAmount, insuranceType),
                 coverageAmount,
                 property.getCurrency(),
                 name,
@@ -43,6 +59,12 @@ public class InsuranceServiceJBrazil implements InsuranceService {
         return resultInsurance;
     }
 
+    /**
+     * метод оплаты страхового контракта
+     * @param numberInsuranceContract       номер неоплаченного страхового контракта
+     * @return                              оплаченный контракт
+     * @throws NonExistentNumberContract    вызываемое исключение если контракт не найден по номеру
+     */
     @Override
     public InsuranceContract insurancePay(String numberInsuranceContract) throws NonExistentNumberContract {
 

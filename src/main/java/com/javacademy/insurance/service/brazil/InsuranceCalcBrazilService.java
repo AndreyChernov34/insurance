@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-
+/**
+ * Страховой калькулятор для Бразилии
+ */
 @Component
 @Profile("brazil")
 @AllArgsConstructor
@@ -18,6 +20,12 @@ import java.math.BigDecimal;
 public class InsuranceCalcBrazilService implements InsuranceCalcService {
     Property property;
 
+    /**
+     * метод расчета стоимости страховки
+     * @param coverageAmount
+     * @param insuranceType
+     * @return
+     */
     @Override
     public BigDecimal insuranceCost(BigDecimal coverageAmount, InsuranceType insuranceType) {
         BigDecimal result = BigDecimal.ZERO;

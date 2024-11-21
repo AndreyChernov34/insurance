@@ -16,17 +16,24 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
+/**
+ * Сервис страхования для Японии
+ */
 @Component
 @Profile("japan")
 @EnableConfigurationProperties(Property.class)
 @AllArgsConstructor
 public class InsuranceServiceJapan implements InsuranceService {
+    // класс с данными
     @Autowired
     private Property property;
+    // архив
     @Autowired
     private Archive archive;
+    // генератор номера
     @Autowired
     private NumberContractGenerator numberContractGenerator;
+    // Страховой калькулятор
     @Autowired
     InsuranceCalcJapanService insuranceCalcJapanService;
 
@@ -35,7 +42,13 @@ public class InsuranceServiceJapan implements InsuranceService {
 
         InsuranceContract resultInsurance;
 
-
+        /**
+         * метод создания страхового предложения (неоплаченного контракта) с занесением в архив
+         * @param coverageAmount    стоимость страхового покрытия
+         * @param name              ФИО клиента
+         * @param insuranceType     тип страхования
+         * @return                  Страховой контракт (неоплаченный)
+         */
         resultInsurance = new InsuranceContract(numberContractGenerator.generateContractNumber(),
                 insuranceCalcJapanService.insuranceCost(coverageAmount, insuranceType),
                 coverageAmount,
@@ -48,6 +61,12 @@ public class InsuranceServiceJapan implements InsuranceService {
         return resultInsurance;
     }
 
+    /**
+     * метод оплаты страхового контракта
+     * @param numberInsuranceContract       номер неоплаченного страхового контракта
+     * @return                              оплаченный контракт
+     * @throws NonExistentNumberContract    вызываемое исключение если контракт не найден по номеру
+     */
     @Override
     public InsuranceContract insurancePay(String numberInsuranceContract) throws NonExistentNumberContract {
 
