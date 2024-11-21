@@ -1,13 +1,12 @@
-package com.javacademy.insurance;
+package com.javacademy.insurance.service;
 
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 public class NumberContractGenerator {
+    private static int counter = 1;
 
     public String generateContractNumber() {
-        return "CONTRACT-" + UUID.randomUUID().toString();
+        return String.format("%03d", counter++);
     }
 }

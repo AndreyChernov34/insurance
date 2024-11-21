@@ -1,11 +1,9 @@
-country: japan
-currency: Yen
-type:
-  health:
-    coefficient: 0.015
-    amount: 12000
-  rubbery:
-    coefficient: 0.01
-    amount: 12000
+app:
+  healthcoefficient: 0.015
+  healthamount: 12000
+  robberycoefficient: 0.01
+  robberyamount: 10000
+  country: japan
+  currency: Yen
 
 

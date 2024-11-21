@@ -1,9 +1,7 @@
-country: brazil
-currency: Real
-type:
-  health:
-    coefficient: 0.03
-    amount: 800
-  rubbery:
-    coefficient: 0.05
-    amount: 300
+app:
+  country: brazil
+  currency: Real
+  healthcoefficient: 0.03
+  healthamount: 800
+  robberycoefficient: 0.05
+  robberyamount: 300
